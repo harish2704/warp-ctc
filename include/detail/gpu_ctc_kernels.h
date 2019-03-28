@@ -1,3 +1,4 @@
+#include "hip/hip_runtime.h"
 #pragma once
 
 #include <contrib/moderngpu/include/device/ctascan.cuh>
@@ -457,8 +458,8 @@ __global__ void compute_probs_kernel(Op f, ProbT* probs,
                                      int alphabet_size,
                                      int count) {
 
-    int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    int stride = blockDim.x * gridDim.x;
+    int idx = (int) blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = (int) blockDim.x * gridDim.x;
 #pragma unroll
     for(int i = 0; i < VT; i++) {
         if (idx < count) {
@@ -475,8 +476,8 @@ __global__ void prepare_stable_SM_kernel(Op f, ProbT* probs,
                                          int alphabet_size,
                                          int count) {
 
-    int idx = blockDim.x * blockIdx.x + threadIdx.x;
-    int stride = blockDim.x * gridDim.x;
+    int idx = (int) blockDim.x * blockIdx.x + threadIdx.x;
+    int stride = (int) blockDim.x * gridDim.x;
 #pragma unroll
     for(int i = 0; i < VT; i++) {
         if (idx < count) {

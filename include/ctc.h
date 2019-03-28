@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 //forward declare of CUDA typedef to avoid needing to pull in CUDA headers
-typedef struct CUstream_st* CUstream;
+typedef  hipStream_t CUstream;
 
 typedef enum {
     CTC_STATUS_SUCCESS = 0,

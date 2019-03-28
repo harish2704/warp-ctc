@@ -2,10 +2,12 @@
 #include <iostream>
 #include <algorithm>
 
+#include "hip_runtime_api.h"
+
 #include <ctc.h>
 
 #include "detail/cpu_ctc.h"
-#ifdef __CUDACC__
+#ifdef __HIPCC__
     #include "detail/gpu_ctc.h"
 #endif
 
@@ -70,7 +72,7 @@ ctcStatus_t compute_ctc_loss(const float* const activations,
             return ctc.score_forward(activations, costs, flat_labels,
                                      label_lengths, input_lengths);
     } else if (options.loc == CTC_GPU) {
-#ifdef __CUDACC__
+#ifdef __HIPCC__
         GpuCTC<float> ctc(alphabet_size, minibatch, workspace, options.stream,
                           options.blank_label);
 
