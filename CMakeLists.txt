@@ -84,8 +84,8 @@ IF (WITH_GPU)
     ENDIF()
 
     add_executable(test_cpu tests/test_cpu.cpp tests/random.cpp )
-    TARGET_LINK_LIBRARIES(test_cpu warpctc)
-    SET_TARGET_PROPERTIES(test_cpu PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
+    TARGET_LINK_LIBRARIES(test_cpu warpctc -lhip_hcc -L/opt/rocm/lib)
+    SET_TARGET_PROPERTIES(test_cpu PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -I/opt/rocm/include/hip -I/opt/rocm/include -D__HIP_PLATFORM_HCC__=1")
 
     HIP_ADD_EXECUTABLE(test_gpu tests/test_gpu.cu tests/random.cpp )
     TARGET_LINK_LIBRARIES(test_gpu warpctc ${CUDA_curand_LIBRARY})

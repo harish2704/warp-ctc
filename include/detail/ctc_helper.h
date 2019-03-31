@@ -1,5 +1,6 @@
 #pragma once
 
+#include "math_functions.h"
 #include <limits>
 #include <algorithm>
 #include <cmath>

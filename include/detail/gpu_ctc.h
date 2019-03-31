@@ -378,7 +378,7 @@ GpuCTC<ProbT>::compute_probs(const ProbT* const activations) {
     const int num_elements = out_dim_ * activation_cols_;
     const int grid_size = ctc_helper::div_up(num_elements, NV);
 
-    hipLaunchKernelGGL((prepare_stable_SM_kernel<ProbT, VT>), dim3(grid_size), dim3(NT), 0, stream_, ctc_helper::identity<ProbT>(), probs_,
+    hipLaunchKernelGGL((prepare_stable_SM_kernel<ProbT, VT, ctc_helper::identity<ProbT>>), dim3(grid_size), dim3(NT), 0, stream_, ctc_helper::identity<ProbT>(), probs_,
         denoms_, out_dim_, num_elements);
 
     // Reduce along columns to calculate denominator
@@ -389,7 +389,7 @@ GpuCTC<ProbT>::compute_probs(const ProbT* const activations) {
         return ctc_status;
 
     // Kernel launch to calculate probabilities
-    hipLaunchKernelGGL((compute_probs_kernel<ProbT, VT>), dim3(grid_size), dim3(NT), 0, stream_, ctc_helper::exponential<ProbT>(), probs_,
+    hipLaunchKernelGGL((compute_probs_kernel<ProbT, VT,ctc_helper::exponential<ProbT>>), dim3(grid_size), dim3(NT), 0, stream_, ctc_helper::exponential<ProbT>(), probs_,
          denoms_, out_dim_, num_elements);
 
     return CTC_STATUS_SUCCESS;

@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "hip_runtime.h"
 #ifdef __cplusplus
 #include <cstddef>
 extern "C" {
